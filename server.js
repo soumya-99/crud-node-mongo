@@ -57,6 +57,19 @@ app.put("/products/:id", async (req, res) => {
     }
 })
 
+app.delete("/products/:id", async (req, res) => {
+    try {
+        const {id} = req.params
+        const product = await Product.findByIdAndDelete(id)
+        if (!product) {
+            return res.status(404).json({ message: `Product not found with ID ${id}` })
+        }
+        res.status(200).json({ message: "Product deleted successfully" })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 mongoose
 	.connect(
 		"mongodb+srv://admin:pass@soumyaapi.c1g2djr.mongodb.net/Node-API?retryWrites=true&w=majority"
